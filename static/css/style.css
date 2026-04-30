@@ -1,0 +1,235 @@
+:root {
+  --apple-blue: #007AFF;
+  --apple-green: #34C759;
+  --apple-red: #FF3B30;
+  --apple-orange: #FF9500;
+  --apple-bg: #F2F2F7; /* iOS grouped background */
+  --apple-card: #FFFFFF;
+  --apple-text-main: #1C1C1E;
+  --apple-text-muted: #8E8E93;
+  --apple-border: rgba(60, 60, 67, 0.1);
+}
+
+body {
+    /* 蘋果標準系統字體堆疊 */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--apple-bg);
+    color: var(--apple-text-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
+}
+
+/* Page entrance animation (Subtle fade like iOS) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Navbar - Apple Translucency */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid var(--apple-border);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-size: 22px;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--apple-text-main);
+    transition: opacity 0.2s ease;
+}
+
+.nav-link:hover:not(.bg-primary) {
+    background-color: transparent;
+    opacity: 0.6;
+}
+
+.bg-primary {
+    background-color: var(--apple-blue) !important;
+}
+
+/* Cards - Apple Squircle Style */
+.card {
+    border-radius: 20px;
+    background-color: var(--apple-card);
+    border: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--apple-blue);
+    border: none;
+    border-radius: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+}
+
+.btn-primary:hover {
+    background-color: #006ae6;
+}
+
+.btn {
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 12px;
+    background-color: var(--apple-bg);
+    border: 1px solid transparent;
+    padding: 14px 16px;
+    font-size: 17px;
+    transition: all 0.2s ease;
+    color: var(--apple-text-main);
+}
+
+.form-control:focus {
+    background-color: var(--apple-card);
+    border-color: var(--apple-blue);
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+}
+
+.input-group-text {
+    border-radius: 12px 0 0 12px;
+    background-color: var(--apple-bg);
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+
+#amount {
+    border-radius: 0 12px 12px 0;
+    font-weight: 700;
+    color: var(--apple-text-main);
+    font-size: 1.5rem;
+}
+
+/* Category Grid */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 12px;
+}
+
+.category-btn {
+    width: 100%;
+    border-radius: 14px;
+    padding: 14px 10px;
+    font-weight: 500;
+    font-size: 15px;
+    background-color: var(--apple-card);
+    border: 1px solid var(--apple-border);
+    color: var(--apple-text-main);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.category-btn:hover {
+    border-color: var(--apple-border);
+    background-color: #F9F9F9;
+}
+
+.btn-check:checked + .category-btn {
+    background-color: var(--apple-blue);
+    color: white;
+    border-color: var(--apple-blue);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    transform: scale(1.03);
+}
+
+/* Summary Card */
+.summary-card {
+    background: var(--apple-card);
+}
+
+/* Progress bar */
+.progress {
+    border-radius: 8px;
+    height: 10px !important;
+    background-color: #E5E5EA;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.progress-bar.bg-success { background-color: var(--apple-green) !important; }
+.progress-bar.bg-warning { background-color: var(--apple-orange) !important; }
+.progress-bar.bg-danger { background-color: var(--apple-red) !important; }
+
+/* Table */
+.table {
+    --bs-table-bg: transparent;
+}
+.table th {
+    font-weight: 600;
+    color: var(--apple-text-muted);
+    border-bottom: 1px solid var(--apple-border);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 10px;
+}
+.table td {
+    border-bottom: 1px solid var(--apple-border);
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+
+/* Typography Tweaks */
+h1, h2, h3, h4, h5 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.text-muted {
+    color: var(--apple-text-muted) !important;
+}
+.text-danger {
+    color: var(--apple-red) !important;
+}
+.text-success {
+    color: var(--apple-green) !important;
+}
+
+/* Toasts */
+.toast {
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    color: var(--apple-text-main) !important;
+    border: 0.5px solid var(--apple-border);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+.toast-body {
+    font-weight: 500;
+}

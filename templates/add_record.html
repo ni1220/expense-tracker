@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4">
+                <h4 class="card-title text-center mb-4">極速記帳</h4>
+                <form id="addRecordForm">
+                    <!-- Type Selection -->
+                    <div class="mb-4 text-center">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="type" id="typeExpense" value="expense" autocomplete="off" checked>
+                            <label class="btn btn-outline-danger" for="typeExpense">支出</label>
+
+                            <input type="radio" class="btn-check" name="type" id="typeIncome" value="income" autocomplete="off">
+                            <label class="btn btn-outline-success" for="typeIncome">收入</label>
+                        </div>
+                    </div>
+
+                    <!-- Category Selection (Expense by default) -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted">分類</label>
+                        <div class="category-grid" id="expenseCategories">
+                            <input type="radio" class="btn-check" name="category" id="catFood" value="飲食" autocomplete="off" required>
+                            <label class="btn btn-outline-secondary category-btn" for="catFood">🍔 飲食</label>
+
+                            <input type="radio" class="btn-check" name="category" id="catTransport" value="交通" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catTransport">🚗 交通</label>
+
+                            <input type="radio" class="btn-check" name="category" id="catEntertainment" value="娛樂" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catEntertainment">🎬 娛樂</label>
+                            
+                            <input type="radio" class="btn-check" name="category" id="catShopping" value="購物" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catShopping">🛍️ 購物</label>
+
+                            <input type="radio" class="btn-check" name="category" id="catOther" value="其他" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catOther">📦 其他</label>
+                        </div>
+                        
+                        <div class="category-grid d-none" id="incomeCategories">
+                            <input type="radio" class="btn-check" name="category" id="catSalary" value="薪水" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catSalary">💰 薪水</label>
+
+                            <input type="radio" class="btn-check" name="category" id="catBonus" value="獎金" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catBonus">🎁 獎金</label>
+                            
+                            <input type="radio" class="btn-check" name="category" id="catInvestment" value="投資" autocomplete="off">
+                            <label class="btn btn-outline-secondary category-btn" for="catInvestment">📈 投資</label>
+                        </div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted">金額</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text border-0 bg-light">$</span>
+                            <input type="number" class="form-control border-0 bg-light" name="amount" id="amount" placeholder="0" required autofocus>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted">日期</label>
+                        <input type="date" class="form-control border-0 bg-light" name="date" id="date" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label class="form-label text-muted">備註 (選填)</label>
+                        <input type="text" class="form-control border-0 bg-light" name="description" id="description" placeholder="輸入備註">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill mt-3 shadow-sm">記錄</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
