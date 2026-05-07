@@ -243,6 +243,29 @@ h1, h2, h3, h4, h5 {
 .calendar-day {
     aspect-ratio: 1;
     font-size: 14px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.calendar-amount {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .calendar-day {
+        font-size: 12px;
+    }
+    .calendar-amount {
+        font-size: 10px !important;
+        margin-top: 2px !important;
+    }
+    #calendarBody {
+        gap: 4px !important;
+    }
 }
 
 .calendar-day.empty {
