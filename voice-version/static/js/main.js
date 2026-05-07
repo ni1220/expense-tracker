@@ -149,6 +149,46 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('amount').value = extractedAmount;
                     }
                     
+                    // 1.5 Extract Date
+                    function parseDateFromTranscript(text) {
+                        const d = new Date();
+                        if (text.includes("大前天")) {
+                            d.setDate(d.getDate() - 3);
+                        } else if (text.includes("前天")) {
+                            d.setDate(d.getDate() - 2);
+                        } else if (text.includes("昨天") || text.includes("昨晚")) {
+                            d.setDate(d.getDate() - 1);
+                        } else if (text.includes("今天") || text.includes("剛剛")) {
+                            // keeps today
+                        } else {
+                            const dateMatch = text.match(/(\d+)\s*月\s*(\d+)\s*[號日]/);
+                            if (dateMatch) {
+                                const month = parseInt(dateMatch[1], 10);
+                                const day = parseInt(dateMatch[2], 10);
+                                if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                                    const year = d.getFullYear();
+                                    d.setFullYear(year, month - 1, day);
+                                    if (d > new Date()) { // Handle previous year
+                                        d.setFullYear(year - 1);
+                                    }
+                                } else return null;
+                            } else return null;
+                        }
+                        
+                        const yyyy = d.getFullYear();
+                        const mm = String(d.getMonth() + 1).padStart(2, '0');
+                        const dd = String(d.getDate()).padStart(2, '0');
+                        return `${yyyy}-${mm}-${dd}`;
+                    }
+                    
+                    const extractedDate = parseDateFromTranscript(transcript);
+                    if (extractedDate) {
+                        const dateInput = document.getElementById('date');
+                        if (dateInput) {
+                            dateInput.value = extractedDate;
+                        }
+                    }
+
                     // 2. Keyword mapping for categories
                     const categoryKeywords = {
                         // Expenses
