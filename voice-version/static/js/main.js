@@ -113,10 +113,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // 2. Keyword mapping for categories
                     const categoryKeywords = {
+                        // Expenses
                         'catFood': ['吃', '喝', '餐', '咖啡', '飲料', '早', '午', '晚', '飯', '麵', '星巴克', '麥當勞', '肯德基', '摩斯', '手搖', '五十嵐', '麻古', '餐廳', '便當', '宵夜'],
                         'catTransport': ['車', '捷運', '公車', '計程車', '停車', '加油', '高鐵', '台鐵', 'uber', 'yoxi', '55688', '客運', '火車', '機票'],
                         'catEntertainment': ['玩', '電影', '唱歌', '遊戲', '展覽', 'netflix', 'spotify', '迪士尼', '威秀', '訂閱'],
-                        'catShopping': ['買', '衣服', '鞋子', '網購', '蝦皮', '全聯', '小七', '便利商店', 'momo', 'pchome', '淘寶', '好市多', '家樂福', '康是美', '屈臣氏']
+                        'catShopping': ['買', '衣服', '鞋子', '網購', '蝦皮', '全聯', '小七', '便利商店', 'momo', 'pchome', '淘寶', '好市多', '家樂福', '康是美', '屈臣氏'],
+                        // Income
+                        'catSalary': ['薪水', '工資', '發薪', '入帳', '薪資'],
+                        'catBonus': ['獎金', '紅利', '年終', '分紅'],
+                        'catInvestment': ['投資', '股息', '利息', '股票', '基金']
                     };
                     
                     let matchedCategory = null;
@@ -128,9 +133,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     if (matchedCategory) {
-                        document.getElementById('typeExpense').checked = true;
-                        expenseCategories.classList.remove('d-none');
-                        incomeCategories.classList.add('d-none');
+                        const isIncome = ['catSalary', 'catBonus', 'catInvestment'].includes(matchedCategory);
+                        
+                        if (isIncome) {
+                            document.getElementById('typeIncome').checked = true;
+                            expenseCategories.classList.add('d-none');
+                            incomeCategories.classList.remove('d-none');
+                        } else {
+                            document.getElementById('typeExpense').checked = true;
+                            expenseCategories.classList.remove('d-none');
+                            incomeCategories.classList.add('d-none');
+                        }
                         document.getElementById(matchedCategory).checked = true;
                     }
                     
