@@ -44,6 +44,30 @@ def history():
     
     return render_template('history.html', transactions=transactions)
 
+@app.route('/calendar')
+def calendar_view():
+    return render_template('calendar.html')
+
+@app.route('/api/calendar-data')
+def calendar_data():
+    month_str = request.args.get('month', datetime.today().strftime('%Y-%m'))
+    conn = get_db_connection()
+    
+    expenses = conn.execute('''
+        SELECT date, SUM(amount) as total
+        FROM transactions
+        WHERE type = 'expense' AND date LIKE ?
+        GROUP BY date
+    ''', (month_str + '%',)).fetchall()
+    
+    conn.close()
+    
+    data = {}
+    for row in expenses:
+        data[row['date']] = row['total']
+        
+    return jsonify(data)
+
 @app.route('/api/transactions', methods=['POST'])
 def create_transaction():
     data = request.json
