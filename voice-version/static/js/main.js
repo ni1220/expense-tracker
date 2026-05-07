@@ -104,11 +104,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 recognition.addEventListener('result', function(event) {
                     const transcript = event.results[0][0].transcript;
                     
-                    // Simple NLP parser
-                    // 1. Extract numbers
-                    const amountMatch = transcript.match(/\d+/);
-                    if (amountMatch) {
-                        document.getElementById('amount').value = amountMatch[0];
+                    // 1. Extract numbers with Chinese units
+                    function parseAmount(text) {
+                        const numMap = {'一':'1', '二':'2', '兩':'2', '三':'3', '四':'4', '五':'5', '六':'6', '七':'7', '八':'8', '九':'9', '零':'0'};
+                        let s = text;
+                        for (let k in numMap) s = s.split(k).join(numMap[k]);
+                        
+                        let match = s.match(/[0-9]+(?:[萬千百十][0-9]*)+|[0-9]+/);
+                        if (!match) return null;
+                        
+                        let numStr = match[0];
+                        if (/^[0-9]+$/.test(numStr)) return parseInt(numStr, 10);
+                        
+                        numStr = numStr.replace(/([萬])([0-9]+)$/, '$1$2千')
+                                       .replace(/([千])([0-9]+)$/, '$1$2百')
+                                       .replace(/([百])([0-9]+)$/, '$1$2十');
+                        
+                        let total = 0, temp = "";
+                        for(let char of numStr) {
+                            if (/[0-9]/.test(char)) {
+                                temp += char;
+                            } else {
+                                let n = temp ? parseInt(temp, 10) : 0;
+                                if (char === '萬') total += n * 10000;
+                                else if (char === '千') total += n * 1000;
+                                else if (char === '百') total += n * 100;
+                                else if (char === '十') total += n * 10;
+                                temp = "";
+                            }
+                        }
+                        if (temp) total += parseInt(temp, 10);
+                        return total;
+                    }
+
+                    const extractedAmount = parseAmount(transcript);
+                    if (extractedAmount) {
+                        document.getElementById('amount').value = extractedAmount;
                     }
                     
                     // 2. Keyword mapping for categories
@@ -121,7 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Income
                         'catSalary': ['薪水', '工資', '發薪', '入帳', '薪資'],
                         'catBonus': ['獎金', '紅利', '年終', '分紅'],
-                        'catInvestment': ['投資', '股息', '利息', '股票', '基金']
+                        'catInvestment': ['投資', '股息', '利息', '股票', '基金'],
+                        'catIncomeOther': ['給我', '收到', '拿到', '匯給', '匯入']
                     };
                     
                     let matchedCategory = null;
@@ -133,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     if (matchedCategory) {
-                        const isIncome = ['catSalary', 'catBonus', 'catInvestment'].includes(matchedCategory);
+                        const isIncome = ['catSalary', 'catBonus', 'catInvestment', 'catIncomeOther'].includes(matchedCategory);
                         
                         if (isIncome) {
                             document.getElementById('typeIncome').checked = true;
