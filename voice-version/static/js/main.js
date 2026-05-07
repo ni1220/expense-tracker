@@ -22,10 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Add Record Page Logic ---
     const addRecordForm = document.getElementById('addRecordForm');
     if (addRecordForm) {
-        // Pre-fill today's date
+        // Pre-fill date from URL or today's date
         const dateInput = document.getElementById('date');
         if (dateInput && !dateInput.value) {
-            dateInput.value = new Date().toISOString().split('T')[0];
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('date')) {
+                dateInput.value = urlParams.get('date');
+            } else {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
         }
 
         // Toggle Categories based on Type
