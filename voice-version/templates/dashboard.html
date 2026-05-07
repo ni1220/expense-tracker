@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 summary-card text-center">
+            <div class="card-body py-5">
+                <h5 class="text-muted mb-3">本月總支出</h5>
+                <h1 class="display-4 fw-bold text-danger mb-0" id="totalExpense">$0</h1>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title mb-0">支出分佈</h5>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">預算管控</h5>
+                <div class="d-flex justify-content-between mb-2 mt-4">
+                    <span>已使用: <span id="usedBudget" class="fw-bold">$0</span></span>
+                    <span>預算上限: <span id="budgetLimit" class="fw-bold">$0</span></span>
+                </div>
+                <div class="progress" style="height: 20px;">
+                    <div id="budgetProgress" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                </div>
+                
+                <div class="mt-4">
+                    <form id="budgetForm" class="d-flex gap-2">
+                        <input type="number" id="budgetInput" class="form-control" placeholder="設定本月預算" required>
+                        <button type="submit" class="btn btn-primary">設定</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}
