@@ -106,8 +106,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // 1. Extract numbers with Chinese units
                     function parseAmount(text) {
+                        // 移除貨幣符號與千分位逗號，例如 "$10,000" -> "10000"
+                        let s = text.replace(/[$,，]/g, '');
+                        
                         const numMap = {'一':'1', '二':'2', '兩':'2', '三':'3', '四':'4', '五':'5', '六':'6', '七':'7', '八':'8', '九':'9', '零':'0'};
-                        let s = text;
                         for (let k in numMap) s = s.split(k).join(numMap[k]);
                         
                         let match = s.match(/[0-9]+(?:[萬千百十][0-9]*)+|[0-9]+/);
