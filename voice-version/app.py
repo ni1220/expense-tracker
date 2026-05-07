@@ -119,6 +119,14 @@ def chart_data():
     ''', (month_str + '%',)).fetchone()
     total_expense = total_expense_row['total'] or 0
     
+    # Get total income
+    total_income_row = conn.execute('''
+        SELECT SUM(amount) as total
+        FROM transactions
+        WHERE type = 'income' AND date LIKE ?
+    ''', (month_str + '%',)).fetchone()
+    total_income = total_income_row['total'] or 0
+    
     # Get budget for the current month
     budget_row = conn.execute('SELECT limit_amount FROM budget WHERE month = ?', (month_str,)).fetchone()
     budget = budget_row['limit_amount'] if budget_row else 0
@@ -132,6 +140,7 @@ def chart_data():
         'labels': labels,
         'data': data,
         'total_expense': total_expense,
+        'total_income': total_income,
         'budget': budget
     })
 

@@ -8,8 +8,31 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/chart-data')
             .then(res => res.json())
             .then(data => {
-                // Update total expense
-                document.getElementById('totalExpense').textContent = `$${data.total_expense.toLocaleString()}`;
+                // Update total expense, income, balance
+                const totalExpense = data.total_expense || 0;
+                const totalIncome = data.total_income || 0;
+                const netBalance = totalIncome - totalExpense;
+
+                const expenseEl = document.getElementById('totalExpense');
+                if (expenseEl) expenseEl.textContent = `$${totalExpense.toLocaleString()}`;
+                
+                const incomeEl = document.getElementById('totalIncome');
+                if (incomeEl) incomeEl.textContent = `$${totalIncome.toLocaleString()}`;
+                
+                const balanceEl = document.getElementById('netBalance');
+                if (balanceEl) {
+                    balanceEl.textContent = `$${netBalance.toLocaleString()}`;
+                    if (netBalance < 0) {
+                        balanceEl.classList.remove('text-success', 'text-dark');
+                        balanceEl.classList.add('text-danger');
+                    } else if (netBalance > 0) {
+                        balanceEl.classList.remove('text-danger', 'text-dark');
+                        balanceEl.classList.add('text-success');
+                    } else {
+                        balanceEl.classList.remove('text-danger', 'text-success');
+                        balanceEl.classList.add('text-dark');
+                    }
+                }
                 
                 // Update Budget
                 const usedEl = document.getElementById('usedBudget');
