@@ -233,3 +233,65 @@ h1, h2, h3, h4, h5 {
 .toast-body {
     font-weight: 500;
 }
+
+/* Calendar CSS Variables */
+:root {
+  --color-spend-low: #E5F5E0;
+  --color-spend-mid: #FFF2CC;
+  --color-spend-high: #F8D7DA;
+}
+
+/* Calendar Grid */
+.grid-7-cols {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    font-size: 14px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.calendar-amount {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .calendar-day {
+        font-size: 12px;
+    }
+    .calendar-amount {
+        font-size: 10px !important;
+        margin-top: 2px !important;
+    }
+    #calendarBody {
+        gap: 4px !important;
+    }
+}
+
+.calendar-day.empty {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+/* Heatmap Colors (Dynamically driven by variables) */
+.bg-spend-low {
+    background-color: var(--color-spend-low) !important;
+}
+.bg-spend-mid {
+    background-color: var(--color-spend-mid) !important;
+}
+.bg-spend-high {
+    background-color: var(--color-spend-high) !important;
+    color: var(--apple-red) !important;
+}
+
+.color-box {
+    border: 1px solid rgba(0,0,0,0.1);
+}
