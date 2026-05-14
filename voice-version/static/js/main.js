@@ -19,6 +19,112 @@ document.addEventListener('DOMContentLoaded', function() {
         toast.show();
     }
 
+    // --- Global Background Logic ---
+    function applyAppBackground() {
+        const bgSetting = localStorage.getItem('appBackground');
+        if (bgSetting) {
+            if (bgSetting.startsWith('http') || bgSetting.startsWith('/')) {
+                // It's an image URL
+                document.body.style.backgroundImage = `url('${bgSetting}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundColor = 'transparent';
+            } else {
+                // It's a color hex
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = bgSetting;
+            }
+        } else {
+            // Default Apple Background
+            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundColor = '#F2F2F7';
+        }
+    }
+    
+    // Apply background on load
+    applyAppBackground();
+
+    // --- Settings Page Logic ---
+    const btnApplyColor = document.getElementById('btnApplyColor');
+    if (btnApplyColor) {
+        btnApplyColor.addEventListener('click', () => {
+            const color = document.getElementById('bgColorInput').value;
+            localStorage.setItem('appBackground', color);
+            applyAppBackground();
+            showToast('背景顏色已套用');
+        });
+
+        document.getElementById('btnApplyUrl').addEventListener('click', () => {
+            const url = document.getElementById('bgUrlInput').value;
+            if (url) {
+                localStorage.setItem('appBackground', url);
+                applyAppBackground();
+                showToast('背景圖片已套用');
+            }
+        });
+
+        document.getElementById('btnResetBg').addEventListener('click', () => {
+            localStorage.removeItem('appBackground');
+            applyAppBackground();
+            showToast('已恢復預設背景');
+            document.getElementById('bgColorInput').value = '#f2f2f7';
+            document.getElementById('bgUrlInput').value = '';
+        });
+
+        document.getElementById('bgUploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('bgFileInput');
+            if (fileInput.files.length === 0) {
+                showToast('請先選擇檔案', true);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const btn = document.getElementById('btnUploadFile');
+            const originalText = btn.textContent;
+            btn.textContent = '上傳中...';
+            btn.disabled = true;
+
+            fetch('/api/upload-bg', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Force cache bypass by appending timestamp
+                    const urlWithTimestamp = data.url + '?t=' + new Date().getTime();
+                    localStorage.setItem('appBackground', urlWithTimestamp);
+                    applyAppBackground();
+                    showToast('自訂圖片上傳並套用成功');
+                } else {
+                    showToast(data.error || '上傳失敗', true);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('上傳發生錯誤', true);
+            })
+            .finally(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        });
+        
+        // Pre-fill inputs if there's a setting
+        const currentBg = localStorage.getItem('appBackground');
+        if (currentBg) {
+            if (currentBg.startsWith('#')) {
+                document.getElementById('bgColorInput').value = currentBg;
+            } else if (currentBg.startsWith('http')) {
+                document.getElementById('bgUrlInput').value = currentBg;
+            }
+        }
+    }
+
     // --- Add Record Page Logic ---
     const addRecordForm = document.getElementById('addRecordForm');
     if (addRecordForm) {

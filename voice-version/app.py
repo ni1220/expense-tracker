@@ -2,8 +2,13 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from database import get_db_connection, init_db
 from datetime import datetime
 import calendar
+import os
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Initialize DB on startup
 with app.app_context():
@@ -43,6 +48,23 @@ def history():
     conn.close()
     
     return render_template('history.html', transactions=transactions)
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
+@app.route('/api/upload-bg', methods=['POST'])
+def upload_bg():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = 'custom_bg_' + datetime.now().strftime('%Y%m%d%H%M%S') + os.path.splitext(file.filename)[1]
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(filepath)
+        return jsonify({'success': True, 'url': url_for('static', filename='uploads/' + filename)})
 
 @app.route('/calendar')
 def calendar_view():

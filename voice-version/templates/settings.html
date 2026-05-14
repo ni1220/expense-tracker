@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4 p-md-5">
+                <h4 class="card-title fw-bold mb-4">⚙️ 應用程式設定</h4>
+                
+                <h5 class="fw-bold mt-5 mb-3">自訂背景</h5>
+                <p class="text-muted small mb-4">改變整個 App 的背景顏色或圖片，設定會自動儲存在您的裝置上。</p>
+                
+                <!-- Option 1: Solid Color -->
+                <div class="mb-4 p-3 border rounded">
+                    <label class="form-label fw-medium">1. 選擇單一顏色</label>
+                    <div class="d-flex gap-3 align-items-center">
+                        <input type="color" class="form-control form-control-color border-0" id="bgColorInput" value="#f2f2f7" title="Choose your color" style="width: 60px; height: 40px; padding: 0;">
+                        <button class="btn btn-outline-primary rounded-pill px-4" id="btnApplyColor">套用顏色</button>
+                    </div>
+                </div>
+
+                <!-- Option 2: Image URL -->
+                <div class="mb-4 p-3 border rounded">
+                    <label class="form-label fw-medium">2. 使用網路圖片網址</label>
+                    <div class="input-group">
+                        <input type="url" class="form-control" id="bgUrlInput" placeholder="https://example.com/image.jpg">
+                        <button class="btn btn-outline-primary px-4" style="border-radius: 0 14px 14px 0;" id="btnApplyUrl">套用圖片</button>
+                    </div>
+                </div>
+
+                <!-- Option 3: File Upload -->
+                <div class="mb-4 p-3 border rounded">
+                    <label class="form-label fw-medium">3. 上傳本機圖片</label>
+                    <form id="bgUploadForm" class="d-flex flex-column flex-sm-row gap-3">
+                        <input class="form-control" type="file" id="bgFileInput" accept="image/*">
+                        <button type="submit" class="btn btn-outline-primary px-4" style="border-radius: 14px;" id="btnUploadFile">上傳並套用</button>
+                    </form>
+                </div>
+
+                <hr class="my-4">
+                
+                <div class="text-end">
+                    <button class="btn btn-light px-4 text-danger fw-medium" style="border-radius: 14px;" id="btnResetBg">恢復預設背景</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
